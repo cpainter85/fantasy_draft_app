@@ -1,0 +1,9 @@
+%nav.navbar.navbar-inverse.navbar-fixed-top
+  .container
+    .collapse.navbar-collapse
+      %ul.nav.navbar-nav.navbar-right
+        -if current_user
+          =link_to current_user.name
+          =link_to 'Sign Out'
+        -else
+          %li=link_to 'Sign Up', sign_up_path

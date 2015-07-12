@@ -1,0 +1,16 @@
+.container
+  .page-header
+    %h1 New User Sign Up
+  =form_for @user, url: sign_up_path do |f|
+
+    =render partial: 'shared/errors', locals: { object: @user }
+
+    =f.label :name
+    =f.text_field :name
+    =f.label :email
+    =f.email_field :email
+    =f.label :password
+    =f.password_field :password
+    =f.label :password_confirmation
+    =f.password_field :password_confirmation
+    =f.submit 'Sign Up'
