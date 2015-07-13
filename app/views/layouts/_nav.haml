@@ -4,7 +4,7 @@
       %ul.nav.navbar-nav.navbar-right
         -if current_user
           %li=link_to current_user.name
-          %li=link_to 'Sign Out'
+          %li=link_to 'Sign Out', sign_out_path
         -else
           %li=link_to 'Sign Up', sign_up_path
           %li=link_to 'Sign In', sign_in_path
