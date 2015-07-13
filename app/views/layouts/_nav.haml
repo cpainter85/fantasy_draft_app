@@ -3,7 +3,8 @@
     .collapse.navbar-collapse
       %ul.nav.navbar-nav.navbar-right
         -if current_user
-          =link_to current_user.name
-          =link_to 'Sign Out'
+          %li=link_to current_user.name
+          %li=link_to 'Sign Out'
         -else
           %li=link_to 'Sign Up', sign_up_path
+          %li=link_to 'Sign In', sign_in_path

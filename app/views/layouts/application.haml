@@ -11,5 +11,8 @@
     -if notice
       .alert.alert-success
         =notice
-        
+
+    -if flash[:error]
+      .alert.alert-danger
+        =flash[:error]
     = yield
