@@ -5,3 +5,10 @@ def create_user(overrides={})
     password: 'manwithoutfear'
   }.merge(overrides))
 end
+
+def create_game(overrides={})
+  Game.create!({
+    name: 'TV Draft',
+    description: 'Fantasy draft of TV characters'
+  }.merge(overrides))
+end
