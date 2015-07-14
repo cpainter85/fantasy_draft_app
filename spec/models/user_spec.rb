@@ -3,6 +3,24 @@ require 'rails_helper'
 describe User do
   let (:user) { create_user }
 
+  describe 'associations' do
+    let(:game) { create_game }
+    let(:game2) { create_game(name: 'Movie Draft', description: 'Fantasy draft of Movie characters') }
+    let!(:team) { create_team(game, user) }
+    let!(:team2) { create_team(game2, user) }
+
+    describe '#teams' do
+      it 'returns all the teams belongs to a particular user' do
+        expect(user.teams).to eq([team, team2])
+      end
+    end
+    describe '#games' do
+      it 'returns all the games a user is participating in' do
+        expect(user.games).to eq([game, game2])
+      end
+    end
+  end
+
   describe 'validations' do
     it 'validates the presence of a name' do
       user.update_attributes(name: nil)
