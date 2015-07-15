@@ -23,4 +23,13 @@ feature 'Users can create new games, view existing games, and join existing game
     expect(page).to have_content "#{new_game[:name]} (1 team)"
     expect(Game.last.users).to eq([user])
   end
+
+  scenario 'a non-signed in user cannot create a new game' do
+    visit root_path
+    click_link 'Create New Game'
+
+    expect(current_path).to eq sign_in_path
+    expect(page).to have_content 'You must sign in'
+  end
+
 end

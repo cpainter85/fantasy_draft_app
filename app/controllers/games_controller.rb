@@ -1,4 +1,7 @@
 class GamesController < ApplicationController
+
+  before_action :ensure_user
+
   def new
     @game = Game.new
     @team = @game.teams.new
