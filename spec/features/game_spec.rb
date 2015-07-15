@@ -32,4 +32,27 @@ feature 'Users can create new games, view existing games, and join existing game
     expect(page).to have_content 'You must sign in'
   end
 
+  scenario 'a signed in user can join an existing game' do
+    game = create_game
+    team = create_team(game, user)
+    user2 = create_user(name: 'Captain America', email: 'sentinelofliberty@email.com')
+    user_sign_in(user2)
+
+    visit root_path
+    expect(page).to have_content "#{game.name} (1 team)"
+    click_link 'Join this game'
+
+    expect(current_path).to eq new_game_team_path(game)
+    expect(page).to have_content "Join #{game.name}"
+    fill_in 'Team Name', with: 'The Squadron Supreme'
+    click_button 'Join Game'
+
+    expect(page).to have_content "You have successfully joined #{game.name}!"
+    expect(page).to have_content "#{game.name} (2 teams)"
+    expect(game.teams.count).to eq(2)
+    expect(Team.last.user).to eq(user2)
+    expect(Team.last.game).to eq(game)
+    expect(Team.last.draft_order).to eq(game.teams.count)
+  end
+
 end

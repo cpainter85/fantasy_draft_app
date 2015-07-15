@@ -3,7 +3,7 @@ require 'rails_helper'
 describe Team do
   let (:game) { create_game }
   let (:user) { create_user }
-  let (:team) { create_team(game, user) }
+  let! (:team) { create_team(game, user) }
 
   describe 'associations' do
     describe '#game' do
@@ -31,6 +31,24 @@ describe Team do
     it 'validates the presence of a draft order number' do
       team.update_attributes(draft_order: nil)
       expect(team.errors.messages).to eq(draft_order: ['can\'t be blank'])
+    end
+  end
+
+  describe 'methods' do
+    describe '#next_draft' do
+      it 'returns the number for the next available draft order number' do
+        new_team = Team.new(game_id: game.id, name: 'The Titans')
+        new_team.next_draft
+        new_team.save
+
+        expect(Team.last.draft_order).to eq(2)
+
+        third_team = Team.new(game_id: game.id, name: 'Teen Titans')
+        third_team.next_draft
+        third_team.save
+
+        expect(Team.last.draft_order).to eq(3)
+      end
     end
   end
 end

@@ -7,7 +7,9 @@ Rails.application.routes.draw do
   post 'sign-in', to: 'authentication#create'
   get 'sign-out', to: 'authentication#destroy'
 
-  resources :games, only: [:new, :create]
+  resources :games, only: [:new, :create] do
+    resources :teams, only: [:new, :create]
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
