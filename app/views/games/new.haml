@@ -1,0 +1,15 @@
+.container
+  .page-header
+    %h1 Create a New Game
+
+    =form_for @game do |f|
+      =f.label :name, 'Name of Game'
+      =f.text_field :name
+      =f.label :description
+      =f.text_area :description
+
+      =fields_for @team do |t|
+        =t.label :name, 'Team Name'
+        =t.text_field :name
+
+      =f.submit
