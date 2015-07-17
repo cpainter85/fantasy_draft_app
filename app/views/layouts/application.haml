@@ -7,12 +7,12 @@
     = csrf_meta_tags
   %body
     = render 'layouts/nav'
+    .container
+      -if notice
+        .alert.alert-success
+          =notice
 
-    -if notice
-      .alert.alert-success
-        =notice
-
-    -if flash[:error]
-      .alert.alert-danger
-        =flash[:error]
+      -if flash[:error]
+        .alert.alert-danger
+          =flash[:error]
     = yield

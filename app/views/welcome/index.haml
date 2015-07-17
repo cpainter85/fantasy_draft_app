@@ -1,7 +1,8 @@
 .container
-  %button.btn.btn-primary=link_to 'Create New Game', new_game_path
+
+  =link_to 'Create New Game', new_game_path, class: 'btn btn-primary'
 
   -@games.each do |game|
     %p
-      ="#{game.name} (#{pluralize(game.teams.count, 'team')})"
+      ="#{game.name} (#{pluralize(game.teams.count, 'team')}) - #{game.rounds} Rounds"
       =link_to 'Join this game', new_game_team_path(game)

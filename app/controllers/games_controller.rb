@@ -12,8 +12,8 @@ class GamesController < ApplicationController
     @team = @game.teams.new(team_params)
     @team.draft_order = 1
     @team.user_id = current_user.id
-
     if @game.save && @team.save
+      @game.create_positions(params['Positions'])
       redirect_to root_path, notice: "#{@game.name} successfully created!"
     else
       render :new

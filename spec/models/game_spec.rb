@@ -45,17 +45,27 @@ describe Game do
   end
 
   describe 'methods' do
+
+      let(:position_array) { ["Lead Character (Drama)",
+                        "Lead Character (Comedy)",
+                        "Supporting Character (Drama)",
+                        "Supporting Character (Comedy)",
+                        "Cartoon Character"] }
+
     describe '#create_positions' do
       it 'creates positions to be used in this game' do
-        position_array = ["Lead Character (Drama)",
-                          "Lead Character (Comedy)",
-                          "Supporting Character (Drama)",
-                          "Supporting Character (Comedy)",
-                          "Cartoon Character"]
 
         game.create_positions(position_array.join("\n"))
         expect(game.positions.count).to eq(position_array.length)
         expect(game.positions.last.name).to eq(position_array.last)
+      end
+    end
+    describe '#rounds' do
+      it 'shows the number of rounds in a game' do
+        position_array.each do |position|
+          create_position(game, name: position)
+        end
+        expect(game.rounds).to eq(position_array.length)
       end
     end
   end

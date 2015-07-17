@@ -9,8 +9,12 @@ class Game < ActiveRecord::Base
 
   def create_positions(string)
     string.split("\n").each do |position|
-      new_position = self.positions.new(name: position)
+      new_position = self.positions.new(name: position.strip)
       new_position.save
     end
+  end
+
+  def rounds
+    self.positions.count
   end
 end
