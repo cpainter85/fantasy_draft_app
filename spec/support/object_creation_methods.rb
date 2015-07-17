@@ -21,3 +21,10 @@ def create_team(game, user, overrides={})
     draft_order: 1
   }.merge(overrides))
 end
+
+def create_position(game, overrides={})
+  Position.create!({
+    game_id: game.id,
+    name: 'Lead Character in a Drama'
+  }.merge(overrides))
+end

@@ -20,6 +20,15 @@ describe Game do
         expect(game.users).to eq([user, user2])
       end
     end
+
+    describe '#positions' do
+      let(:position) { create_position(game) }
+      let(:position2) { create_position(game, name: 'Lead Character in a Comedy')}
+
+      it 'returns all the positions in a game' do
+        expect(game.positions).to eq([position, position2])
+      end
+    end
   end
 
   describe 'validations' do
@@ -32,6 +41,22 @@ describe Game do
       text = 'text'*376
       game.update_attributes(description: text)
       expect(game.errors.messages).to eq(description: ['is too long (maximum is 1500 characters)'])
+    end
+  end
+
+  describe 'methods' do
+    describe '#create_positions' do
+      it 'creates positions to be used in this game' do
+        position_array = ["Lead Character (Drama)",
+                          "Lead Character (Comedy)",
+                          "Supporting Character (Drama)",
+                          "Supporting Character (Comedy)",
+                          "Cartoon Character"]
+
+        game.create_positions(position_array.join("\n"))
+        expect(game.positions.count).to eq(position_array.length)
+        expect(game.positions.last.name).to eq(position_array.last)
+      end
     end
   end
 
