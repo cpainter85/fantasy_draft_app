@@ -1,6 +1,7 @@
 class Team < ActiveRecord::Base
   belongs_to :game
   belongs_to :user
+  has_many :picks
 
   validates :name, presence: true, length: { maximum: 50 }
   validates :draft_order, presence: true

@@ -8,6 +8,8 @@ describe Game do
     let(:user2) { create_user(name: 'Bruce Wayne', email: 'batman@email.com', password: 'thedarkknight')}
     let!(:team) { create_team(game, user) }
     let!(:team2) { create_team(game, user2, name: 'Justice League', draft_order: 2) }
+    let(:position) { create_position(game) }
+    let(:position2) { create_position(game, name: 'Lead Character in a Comedy')}
 
     describe '#teams' do
       it 'returns all the teams participating in a particular game' do
@@ -22,13 +24,21 @@ describe Game do
     end
 
     describe '#positions' do
-      let(:position) { create_position(game) }
-      let(:position2) { create_position(game, name: 'Lead Character in a Comedy')}
-
       it 'returns all the positions in a game' do
         expect(game.positions).to eq([position, position2])
       end
     end
+
+    describe '#picks' do
+      let(:pick) { create_pick(team, position) }
+      let(:pick2) { create_pick(team, position2) }
+      let(:pick3) { create_pick(team2, position) }
+
+      it 'returns all the picks in a particular game' do
+        expect(game.picks).to eq([pick, pick2, pick3])
+      end
+    end
+
   end
 
   describe 'validations' do

@@ -16,6 +16,16 @@ describe Team do
         expect(team.user).to eq(user)
       end
     end
+    describe '#picks' do
+      let (:position) { create_position(game) }
+      let (:position2) { create_position(game, name: 'Lead in a Comedy') }
+      let (:pick) { create_pick(team, position) }
+      let (:pick2) { create_pick(team, position2) }
+
+      it 'returns the picks belonging to a team' do
+        expect(team.picks).to eq([pick, pick2])
+      end
+    end
   end
 
   describe 'validations' do

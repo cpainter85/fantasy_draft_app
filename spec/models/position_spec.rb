@@ -10,6 +10,18 @@ describe Position do
         expect(position.game).to eq(game)
       end
     end
+    describe '#picks' do
+      let (:user) { create_user }
+      let (:user2) { create_user(email: 'dragonball@email.com')}
+      let (:team) { create_team(game, user) }
+      let (:team2) { create_team(game, user, name: 'The Super Saiyans') }
+      let (:pick) { create_pick(team, position) }
+      let (:pick2) { create_pick(team2, position) }
+
+      it 'returns all the picks for a particular position' do
+        expect(position.picks).to eq([pick, pick2])
+      end
+    end
   end
 
   describe 'validations' do

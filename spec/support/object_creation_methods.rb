@@ -28,3 +28,12 @@ def create_position(game, overrides={})
     name: 'Lead Character in a Drama'
   }.merge(overrides))
 end
+
+def create_pick(team, position, overrides={})
+  Pick.create!({
+    team_id: team.id,
+    position_id: position.id,
+    name: 'Don Draper',
+    from: 'Mad Men'
+  }.merge(overrides))
+end
