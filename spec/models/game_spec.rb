@@ -31,8 +31,8 @@ describe Game do
 
     describe '#picks' do
       let(:pick) { create_pick(team, position) }
-      let(:pick2) { create_pick(team, position2) }
-      let(:pick3) { create_pick(team2, position) }
+      let(:pick2) { create_pick(team, position2, round_drafted: 2) }
+      let(:pick3) { create_pick(team2, position, round_drafted: 3) }
 
       it 'returns all the picks in a particular game' do
         expect(game.picks).to eq([pick, pick2, pick3])
