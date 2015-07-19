@@ -1,6 +1,6 @@
 class GamesController < ApplicationController
 
-  before_action :ensure_user
+  before_action :ensure_user, only: [:new, :create]
 
   def new
     @game = Game.new
@@ -18,6 +18,10 @@ class GamesController < ApplicationController
     else
       render :new
     end
+  end
+
+  def show
+    @game = Game.find(params[:id])
   end
 
   private

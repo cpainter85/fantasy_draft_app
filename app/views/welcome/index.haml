@@ -4,6 +4,7 @@
 
   -@games.each do |game|
     %p
-      ="#{game.name} (#{pluralize(game.teams.count, 'team')}) - #{game.rounds} Rounds"
+      =link_to game.name, game_path(game)
+      ="(#{pluralize(game.teams.count, 'team')}) - #{game.rounds} Rounds"
       -if !(current_user && current_user.participant?(game))
         =link_to 'Join this game', new_game_team_path(game)

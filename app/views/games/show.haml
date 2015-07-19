@@ -1,0 +1,24 @@
+.container
+  .page-header
+    %h1=@game.name
+  -(1..@game.rounds).each do |round|
+    %h2="Round #{round}"
+    %table.table.table-striped
+      %thead
+        %tr
+          %th Team
+          %th Name
+          %th From
+          %th Position
+      %tbody
+        -@game.teams.order(:draft_order).each do |team|
+          %tr
+            %td=team.name
+            -if team.picks.find_by(round_drafted: round)
+              %td=team.picks.find_by(round_drafted: round).name
+              %td=team.picks.find_by(round_drafted: round).from
+              %td=team.picks.find_by(round_drafted: round).position.name
+            -else
+              %td
+              %td
+              %td

@@ -34,6 +34,7 @@ def create_pick(team, position, overrides={})
     team_id: team.id,
     position_id: position.id,
     name: 'Don Draper',
-    from: 'Mad Men'
+    from: 'Mad Men',
+    round_drafted: 1
   }.merge(overrides))
 end
