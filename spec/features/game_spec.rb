@@ -61,6 +61,18 @@ feature 'Users can create new games, view existing games, and join existing game
     expect(Team.last.user).to eq(user2)
     expect(Team.last.game).to eq(game)
     expect(Team.last.draft_order).to eq(game.teams.count)
+    expect(page).to have_no_content('Join this game')
+  end
+
+  scenario 'a non-signed in user cannot join a game' do
+    game = create_game
+
+    visit root_path
+    click_link 'Join this game'
+
+    expect(current_path).to eq sign_in_path
+    expect(page).to have_content 'You must sign in'
+
   end
 
 end

@@ -2,11 +2,11 @@ require 'rails_helper'
 
 describe User do
   let (:user) { create_user }
+  let(:game) { create_game }
+  let!(:team) { create_team(game, user) }
+  let(:game2) { create_game(name: 'Movie Draft', description: 'Fantasy draft of Movie characters') }
 
   describe 'associations' do
-    let(:game) { create_game }
-    let(:game2) { create_game(name: 'Movie Draft', description: 'Fantasy draft of Movie characters') }
-    let!(:team) { create_team(game, user) }
     let!(:team2) { create_team(game2, user) }
 
     describe '#teams' do
@@ -41,6 +41,17 @@ describe User do
     it 'validates a password is at least 8 characters long' do
       user.update_attributes(password: '1234567')
       expect(user.errors.messages).to eq(password: ['is too short (minimum is 8 characters)'])
+    end
+  end
+
+  describe 'methods' do
+    describe '#particpant?' do
+      it 'returns true if the user has a team in the game passed in' do
+        expect(user.participant?(game)).to eq(true)
+      end
+      it 'returns false if the user does not have a team in the game' do
+        expect(user.participant?(game2)).to eq(false)
+      end
     end
   end
 end

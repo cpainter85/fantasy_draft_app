@@ -1,4 +1,5 @@
 class TeamsController < ApplicationController
+  before_action :ensure_user
   before_action do
     @game = Game.find(params[:game_id])
   end
