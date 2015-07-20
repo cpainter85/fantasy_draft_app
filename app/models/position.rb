@@ -3,5 +3,5 @@ class Position < ActiveRecord::Base
   has_many :picks
 
   validates :name, presence: true, length: {maximum: 50}
-  validates :game, presence: true
+  validates :game, presence: { message: 'must exist' }
 end

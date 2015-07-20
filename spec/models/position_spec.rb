@@ -30,11 +30,10 @@ describe Position do
     end
     it 'validates the presence of a game' do
       position.update_attributes(game_id: nil)
-      expect(position.errors.messages).to eq(game: ['can\'t be blank'])
+      expect(position.errors.messages).to eq(game: ['must exist'])
 
-      position2 = build(:position, game_id: game.id+100)
-      position2.save
-      expect(position2.errors.messages).to eq(game: ['can\'t be blank'])
+      position.update_attributes(game_id: game.id+100)
+      expect(position.errors.messages).to eq(game: ['must exist'])
     end
   end
 end

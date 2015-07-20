@@ -38,6 +38,20 @@ describe Team do
       team.update_attributes(draft_order: nil)
       expect(team.errors.messages).to eq(draft_order: ['can\'t be blank'])
     end
+    it 'validates the presence of a game' do
+      team.update_attributes(game_id: nil)
+      expect(team.errors.messages).to eq(game: ['must exist'])
+
+      team.update_attributes(game_id: game.id+100)
+      expect(team.errors.messages).to eq(game: ['must exist'])
+    end
+    it 'validates the presence of a user' do
+      team.update_attributes(user_id: nil)
+      expect(team.errors.messages).to eq(user: ['must exist'])
+
+      team.update_attributes(user_id: user.id+100)
+      expect(team.errors.messages).to eq(user: ['must exist'])
+    end
   end
 
   describe 'methods' do
