@@ -1,81 +1,67 @@
 require 'rails_helper'
 
 describe Game do
-  let (:game) { create_game }
+  let (:game) { create(:game) }
 
   describe 'associations' do
-    let(:user) { create_user }
-    let(:user2) { create_user(name: 'Bruce Wayne', email: 'batman@email.com', password: 'thedarkknight')}
-    let!(:team) { create_team(game, user) }
-    let!(:team2) { create_team(game, user2, name: 'Justice League', draft_order: 2) }
-    let(:position) { create_position(game) }
-    let(:position2) { create_position(game, name: 'Lead Character in a Comedy')}
-
     describe '#teams' do
       it 'returns all the teams participating in a particular game' do
-        expect(game.teams).to eq([team, team2])
+        teams = create_list(:team, 10, game: game)
+        expect(game.teams.order(:id)).to eq(teams)
       end
     end
 
     describe '#users' do
       it 'returns all the users participating in a particular game' do
-        expect(game.users).to eq([user, user2])
+        users = create_list(:user, 10)
+        users.map {|user| create(:team, game: game, user: user)}
+        expect(game.users.order(:id)).to eq(users)
       end
     end
 
     describe '#positions' do
       it 'returns all the positions in a game' do
-        expect(game.positions).to eq([position, position2])
+        positions = create_list(:position, 10, game: game)
+        expect(game.positions.order(:id)).to eq(positions)
       end
     end
 
     describe '#picks' do
-      let(:pick) { create_pick(team, position) }
-      let(:pick2) { create_pick(team, position2, round_drafted: 2) }
-      let(:pick3) { create_pick(team2, position, round_drafted: 3) }
-
       it 'returns all the picks in a particular game' do
-        expect(game.picks).to eq([pick, pick2, pick3])
+        positions = create_list(:position, 10, game: game)
+        teams = create_list(:team, 10, game: game)
+        picks = teams.map.with_index {|team, index| create(:pick, team: team, position: positions[index]) }
+        expect(game.picks.order(:id)).to eq(picks)
       end
     end
 
   end
 
   describe 'validations' do
-    it 'validates the presence of a name' do
+    it 'must have a name' do
       game.update_attributes(name: nil)
       expect(game.errors.messages).to eq(name: ['can\'t be blank'])
     end
 
     it 'validates a description is less than 1500 characters' do
-      text = 'text'*376
-      game.update_attributes(description: text)
+      game.update_attributes(description: 'text'*376)
       expect(game.errors.messages).to eq(description: ['is too long (maximum is 1500 characters)'])
     end
   end
 
   describe 'methods' do
-
-      let(:position_array) { ["Lead Character (Drama)",
-                        "Lead Character (Comedy)",
-                        "Supporting Character (Drama)",
-                        "Supporting Character (Comedy)",
-                        "Cartoon Character"] }
-
     describe '#create_positions' do
       it 'creates positions to be used in this game' do
-
+        position_array = (1..10).map {|x| Faker::Name.title }
         game.create_positions(position_array.join("\n"))
         expect(game.positions.count).to eq(position_array.length)
-        expect(game.positions.last.name).to eq(position_array.last)
+        expect(game.positions.order(:id).pluck(:name)).to eq(position_array)
       end
     end
     describe '#rounds' do
       it 'shows the number of rounds in a game' do
-        position_array.each do |position|
-          create_position(game, name: position)
-        end
-        expect(game.rounds).to eq(position_array.length)
+        create_list(:position, 10, game: game)
+        expect(game.rounds).to eq(10)
       end
     end
   end
