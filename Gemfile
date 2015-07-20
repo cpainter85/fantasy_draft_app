@@ -44,6 +44,8 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.3.2'
   gem 'capybara', '~> 2.4.4'
   gem 'launchy', '~> 2.4.3'
+  gem 'factory_girl_rails', '~> 4.5.0'
+  gem 'faker', '~> 1.4.3'
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
 
