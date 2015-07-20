@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe Position do
-  let(:game) { create_game }
-  let(:position) { create_position(game) }
+  let(:game) { create(:game) }
+  let(:position) { create(:position, game: game) }
 
   describe 'associations' do
     describe '#game' do
@@ -11,15 +11,10 @@ describe Position do
       end
     end
     describe '#picks' do
-      let (:user) { create_user }
-      let (:user2) { create_user(email: 'dragonball@email.com')}
-      let (:team) { create_team(game, user) }
-      let (:team2) { create_team(game, user, name: 'The Super Saiyans') }
-      let (:pick) { create_pick(team, position) }
-      let (:pick2) { create_pick(team2, position) }
-
       it 'returns all the picks for a particular position' do
-        expect(position.picks).to eq([pick, pick2])
+        teams = create_list(:team, 10, game: game)
+        picks = teams.map {|team| create(:pick, position: position, team: team) }
+        expect(position.picks.order(:id)).to eq(picks)
       end
     end
   end
@@ -30,9 +25,16 @@ describe Position do
       expect(position.errors.messages).to eq(name: ['can\'t be blank'])
     end
     it 'validates a position name is no more than 50 characters long' do
-      position_name = 'name'*13
-      position.update_attributes(name: position_name)
+      position.update_attributes(name: 'name'*13)
       expect(position.errors.messages).to eq(name: ['is too long (maximum is 50 characters)'])
+    end
+    it 'validates the presence of a game' do
+      position.update_attributes(game_id: nil)
+      expect(position.errors.messages).to eq(game: ['can\'t be blank'])
+
+      position2 = build(:position, game_id: game.id+100)
+      position2.save
+      expect(position2.errors.messages).to eq(game: ['can\'t be blank'])
     end
   end
 end
