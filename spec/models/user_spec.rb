@@ -1,28 +1,29 @@
 require 'rails_helper'
 
 describe User do
-  let (:user) { create_user }
-  let(:game) { create_game }
-  let!(:team) { create_team(game, user) }
-  let(:game2) { create_game(name: 'Movie Draft', description: 'Fantasy draft of Movie characters') }
+  let(:user) { create(:user) }
 
   describe 'associations' do
-    let!(:team2) { create_team(game2, user) }
-
     describe '#teams' do
       it 'returns all the teams belongs to a particular user' do
-        expect(user.teams).to eq([team, team2])
+        teams = create_list(:team, 5, user: user)
+        expect(user.teams.order(:id)).to eq(teams)
       end
     end
+
     describe '#games' do
       it 'returns all the games a user is participating in' do
-        expect(user.games).to eq([game, game2])
+        games = create_list(:game, 5)
+        games.map { |game| create(:team, user: user, game: game) }
+        expect(user.games.order(:id)).to eq(games)
       end
     end
+
   end
 
+  #
   describe 'validations' do
-    it 'validates the presence of a name' do
+    it 'must have a name' do
       user.update_attributes(name: nil)
       expect(user.errors.messages).to eq(name: ['can\'t be blank'])
     end
@@ -33,7 +34,7 @@ describe User do
     end
 
     it 'validates the uniqueness of an email' do
-      user2 = User.new(name: 'Peter Parker', email: user.email, password: 'withgreatpower')
+      user2 = build(:user, email: user.email)
       user2.save
       expect(user2.errors.messages).to eq(email: ['has already been taken'])
     end
@@ -47,9 +48,12 @@ describe User do
   describe 'methods' do
     describe '#particpant?' do
       it 'returns true if the user has a team in the game passed in' do
+        game = create(:game)
+        team = create(:team, user: user, game: game)
         expect(user.participant?(game)).to eq(true)
       end
       it 'returns false if the user does not have a team in the game' do
+        game2 = create(:game)
         expect(user.participant?(game2)).to eq(false)
       end
     end
