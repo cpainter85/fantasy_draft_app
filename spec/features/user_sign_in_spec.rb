@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature 'User sign in' do
-  let (:user) { create_user }
+  let (:user) { create(:user) }
   scenario 'User can sign in with valid credentials' do
     visit root_path
     expect(page).to have_no_content 'Sign Out'

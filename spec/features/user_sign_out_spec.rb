@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'User sign out' do
   scenario 'User can sign out' do
-    user = create_user
+    user = create(:user)
     user_sign_in(user)
 
     visit root_path
