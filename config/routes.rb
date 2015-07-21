@@ -8,7 +8,9 @@ Rails.application.routes.draw do
   get 'sign-out', to: 'authentication#destroy'
 
   resources :games, only: [:new, :create, :show] do
-    resources :teams, only: [:new, :create]
+    resources :teams, only: [:new, :create] do
+      resources :picks, only: [:new, :create]
+    end
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

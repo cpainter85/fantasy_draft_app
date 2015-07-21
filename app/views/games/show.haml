@@ -1,6 +1,8 @@
 .container
   .page-header
     %h1=@game.name
+  -if current_user && current_user.participant?(@game)
+    =link_to 'Make Draft Pick', new_game_team_pick_path(@game, current_user.participating_team(@game))
   -(1..@game.rounds).each do |round|
     %h2="Round #{round}"
     %table.table.table-striped

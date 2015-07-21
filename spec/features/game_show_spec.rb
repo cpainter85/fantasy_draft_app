@@ -22,4 +22,29 @@ feature 'User can view picks in a game and draft new picks' do
       expect(page).to have_content pick.position.name
     end
   end
+
+  scenario 'a user with a team can make a draft pick' do
+    game = create(:game)
+    users = create_list(:user, 5)
+    user_sign_in(users.first)
+    teams = users.map { |user| create(:team, user: user, game: game) }
+    create_list(:position, 10, game: game)
+    team = users.first.participating_team(game)
+    new_pick = { name: Faker::Name.name, from: Faker::Company.name, position: game.positions.last.name }
+
+    visit game_path(game)
+    click_link "Make Draft Pick"
+
+    expect(current_path).to eq new_game_team_pick_path(game, team)
+    expect(page).to have_content "Draft Character (Round #{team.picks.count+1})"
+
+    fill_in 'Name', with: new_pick[:name]
+    fill_in 'From', with: new_pick[:from]
+    select(new_pick[:position], from: 'Position')
+    click_button 'Draft'
+
+    expect(page).to have_content "#{team.name} successfully drafted #{new_pick[:name]}!"
+    new_pick.each_value { |value| expect(page).to have_content value }
+    expect(Pick.last.round_drafted).to eq(team.picks.count)
+  end
 end

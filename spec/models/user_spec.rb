@@ -57,5 +57,16 @@ describe User do
         expect(user.participant?(game2)).to eq(false)
       end
     end
+
+    describe '#participating_team' do
+      it 'returns the user\'s team participating in the game' do
+        game = create(:game)
+        participating_team = create(:team, user: user, game: game)
+        team_in_different_game = create(:team, user: user)
+        different_users_team = create(:team, game: game)
+
+        expect(user.participating_team(game)).to eq(participating_team)
+      end
+    end
   end
 end

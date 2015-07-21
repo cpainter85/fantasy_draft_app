@@ -1,0 +1,11 @@
+.container
+  .page-header
+    %h1="Draft Character (Round #{@team.picks.count+1})"
+  =form_for [@game, @team, @pick] do |f|
+    =f.label :name
+    =f.text_field :name
+    =f.label :from
+    =f.text_field :from
+    =f.label :position_id
+    =f.collection_select :position_id, Position.all, :id, :name
+    =f.submit 'Draft'

@@ -11,4 +11,8 @@ class User < ActiveRecord::Base
   def participant? (game)
     self.games.include? game
   end
+
+  def participating_team(game)
+    self.teams.find_by(game_id: game.id)
+  end
 end
