@@ -1,5 +1,5 @@
 class TeamsController < ApplicationController
-  before_action :ensure_user
+  before_action :ensure_user, only: [:new, :create]
   before_action do
     @game = Game.find(params[:game_id])
   end
@@ -17,6 +17,10 @@ class TeamsController < ApplicationController
     else
       render :new
     end
+  end
+
+  def show
+    @team = @game.teams.find(params[:id])
   end
 
   private

@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   get 'sign-out', to: 'authentication#destroy'
 
   resources :games, only: [:new, :create, :show] do
-    resources :teams, only: [:new, :create] do
+    resources :teams, only: [:new, :create, :show] do
       resources :picks, only: [:new, :create]
     end
   end

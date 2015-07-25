@@ -1,0 +1,22 @@
+.container
+  .page-header
+    %h1=@team.name
+
+  %table.table.table-striped
+    %thead
+      %th Position
+      %th Name
+      %th From
+      %th Round Drafted
+    %tbody
+      -@game.positions.each do |position|
+        %tr
+          %td=position.name
+          -if @team.position_filled? (position)
+            %td=@team.picks.find_by(position_id: position.id).name
+            %td=@team.picks.find_by(position_id: position.id).from
+            %td=@team.picks.find_by(position_id: position.id).round_drafted
+          -else
+            %td
+            %td
+            %td

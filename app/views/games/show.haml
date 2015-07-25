@@ -15,7 +15,7 @@
       %tbody
         -@game.teams.order(:draft_order).each do |team|
           %tr
-            %td=team.name
+            %td=link_to team.name, game_team_path(@game, team)
             -if team.picks.find_by(round_drafted: round)
               %td=team.picks.find_by(round_drafted: round).name
               %td=team.picks.find_by(round_drafted: round).from
