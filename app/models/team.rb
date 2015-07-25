@@ -11,4 +11,8 @@ class Team < ActiveRecord::Base
   def next_draft
     self.draft_order = self.game.teams.maximum(:draft_order) + 1
   end
+
+  def position_filled? (position)
+    self.picks.find_by(position_id: position.id) != nil
+  end
 end

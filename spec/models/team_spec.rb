@@ -70,5 +70,16 @@ describe Team do
         expect(third_team.draft_order).to eq(3)
       end
     end
+    
+    describe '#position_filled?' do
+      it 'returns true or false if team has filled that particular position already' do
+        positions = create_list(:position, 5, game: game)
+        pick = create(:pick, team: team, position: positions.first)
+
+        expect(team.position_filled?(positions.first)).to eq(true)
+        expect(team.position_filled?(positions.last)).to eq(false)
+
+      end
+    end
   end
 end
