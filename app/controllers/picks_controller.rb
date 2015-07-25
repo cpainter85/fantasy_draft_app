@@ -1,8 +1,10 @@
 class PicksController < ApplicationController
   before_action do
     @team = Team.find(params[:team_id])
-    @game = @team.game
+    @game = Game.find(params[:game_id])
   end
+  before_action :ensure_team_belongs_to_current_user
+  before_action :ensure_team_belongs_to_game
 
   def new
     @pick = @team.picks.new
@@ -23,4 +25,5 @@ class PicksController < ApplicationController
   def pick_params
     params.require(:pick).permit(:name, :from, :position_id)
   end
+
 end

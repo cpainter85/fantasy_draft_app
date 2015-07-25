@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 feature 'User can view picks in a game and draft new picks' do
+  let (:game) { create(:game) }
+
   scenario 'anyone can view game progress' do
-    game = create(:game)
     teams = create_list(:team, 5, game: game)
     positions = create_list(:position, 10, game: game)
     round_1_picks = teams.map.with_index { |team, index| create(:pick, team: team, position: positions[index], round_drafted: 1) }
@@ -24,7 +25,6 @@ feature 'User can view picks in a game and draft new picks' do
   end
 
   scenario 'a user with a team can make a draft pick' do
-    game = create(:game)
     users = create_list(:user, 5)
     user_sign_in(users.first)
     teams = users.map { |user| create(:team, user: user, game: game) }
@@ -46,5 +46,35 @@ feature 'User can view picks in a game and draft new picks' do
     expect(page).to have_content "#{team.name} successfully drafted #{new_pick[:name]}!"
     new_pick.each_value { |value| expect(page).to have_content value }
     expect(Pick.last.round_drafted).to eq(team.picks.count)
+  end
+
+  scenario 'a non-participant cannot see the draft pick link' do
+    create_list(:team, 5, game: game)
+    create_list(:position, 10, game: game)
+
+    visit game_path(game)
+    expect(page).to have_no_content 'Make Draft Pick'
+  end
+
+  scenario 'a team must belong to the game to see new draft pick page, otherwise 404' do
+    create_list(:team, 5, game: game)
+    create_list(:position, 10, game: game)
+
+    user = create(:user)
+    user_sign_in(user)
+    team = create(:team, user: user)
+
+    visit new_game_team_pick_path(game, team)
+    expect(page.status_code).to eq(404)
+  end
+
+  scenario 'trying to access the new draft pick screen without being to correct team owner results in a 404 error' do
+    game = create(:game)
+    create_list(:team, 5, game: game)
+    create_list(:position, 10, game: game)
+
+    visit new_game_team_pick_path(game, Team.last)
+
+    expect(page.status_code).to eq(404)
   end
 end

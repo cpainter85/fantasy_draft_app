@@ -17,4 +17,16 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def ensure_team_belongs_to_current_user
+    if @team.user != current_user
+      render file: 'public/404.html', status: :not_found, layout: false
+    end
+  end
+
+  def ensure_team_belongs_to_game
+    if @team.game != @game
+      render file: 'public/404.html', status: :not_found, layout: false
+    end
+  end
+
 end
