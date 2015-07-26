@@ -7,19 +7,19 @@
       =form_for @user, url: sign_up_path do |f|
         .form-group
           =render partial: 'shared/errors', locals: { object: @user }
-        .form-group
+        %div{:class => "form-group #{'has-error' if f.object.errors.include?(:name)}"}
           =f.label :name, 'Name', class: 'col-md-4 control-label'
           .col-md-8
             =f.text_field :name, class: 'form-control'
-        .form-group
+        %div{:class => "form-group #{'has-error' if f.object.errors.include?(:email)}"}
           =f.label :email, 'Email', class: 'col-md-4 control-label'
           .col-md-8
             =f.email_field :email, class: 'form-control'
-        .form-group
+        %div{:class => "form-group #{'has-error' if f.object.errors.include?(:password)}"}
           =f.label :password, 'Password', class: 'col-md-4 control-label'
           .col-md-8
             =f.password_field :password, class: 'form-control'
-        .form-group
+        %div{:class => "form-group #{'has-error' if f.object.errors.include?(:password_confirmation)}"}
           =f.label :password_confirmation, 'Password confirmation', class: 'col-md-4 control-label'
           .col-md-8
             =f.password_field :password_confirmation, class: 'form-control'
