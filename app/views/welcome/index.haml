@@ -2,9 +2,17 @@
 
   =link_to 'Create New Game', new_game_path, class: 'btn btn-primary'
 
-  -@games.each do |game|
-    %p
-      =link_to game.name, game_path(game)
-      ="(#{pluralize(game.teams.count, 'team')}) - #{game.rounds} Rounds"
-      -if !(current_user && current_user.participant?(game))
-        =link_to 'Join this game', new_game_team_path(game)
+  .games
+    -@games.each do |game|
+      .well
+        %h3
+          =link_to game.name, game_path(game)
+          =link_to 'Join game', new_game_team_path(game), class: 'btn btn-danger btn-xs pull-right' if !(current_user && current_user.participant?(game))
+        %hr
+        %dl.dl-horizontal
+          %dt Rounds:
+          %dd=game.rounds
+          %dt Teams:
+          %dd=game.teams.count
+          %dt Description:
+          %dd=game.description

@@ -22,7 +22,10 @@ feature 'Users can create new games, view existing games, and join existing game
 
     expect(current_path).to eq root_path
     expect(page).to have_content "#{new_game[:name]} successfully created!"
-    expect(page).to have_content "#{new_game[:name]} (1 team) - #{position_array.length} Rounds"
+    expect(page).to have_content "#{new_game[:name]}"
+    expect(page).to have_content "Rounds: #{position_array.length}"
+    expect(page).to have_content "Teams: 1"
+    expect(page).to have_content "Description: #{new_game[:description]}"
     expect(Game.last.users).to eq([user])
     expect(Game.last.positions.order(:id).pluck(:name)).to eq(position_array)
   end
@@ -43,8 +46,8 @@ feature 'Users can create new games, view existing games, and join existing game
     user_sign_in(user2)
 
     visit root_path
-    expect(page).to have_content "#{game.name} (1 team)"
-    click_link 'Join this game'
+    expect(page).to have_content "#{game.name}"
+    click_link 'Join game'
 
     expect(current_path).to eq new_game_team_path(game)
     expect(page).to have_content "Join #{game.name}"
@@ -52,19 +55,19 @@ feature 'Users can create new games, view existing games, and join existing game
     click_button 'Join Game'
 
     expect(page).to have_content "You have successfully joined #{game.name}!"
-    expect(page).to have_content "#{game.name} (2 teams)"
+    expect(page).to have_content "Teams: 2"
     expect(game.teams.count).to eq(2)
     expect(Team.last.user).to eq(user2)
     expect(Team.last.game).to eq(game)
     expect(Team.last.draft_order).to eq(game.teams.count)
-    expect(page).to have_no_content('Join this game')
+    expect(page).to have_no_content('Join game')
   end
 
   scenario 'a non-signed in user cannot join a game' do
     create(:game)
 
     visit root_path
-    click_link 'Join this game'
+    click_link 'Join game'
 
     expect(current_path).to eq sign_in_path
     expect(page).to have_content 'You must sign in'
