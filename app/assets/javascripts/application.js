@@ -15,3 +15,17 @@
 //= require bootstrap-sprockets
 //= require turbolinks
 //= require_tree .
+
+$(document).ready(function () {
+  $('.game-details').hide()
+
+  $('.game-info').hover(function () {
+    console.log('ON')
+    $(this).find('.game-details').slideDown();
+
+  }, function () {
+    console.log('OFF')
+    $(this).find('.game-details').slideUp()
+  });
+
+})
