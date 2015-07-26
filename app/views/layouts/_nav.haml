@@ -1,5 +1,7 @@
 %nav.navbar.navbar-inverse.navbar-fixed-top
   .container
+    .navbar-header
+      =link_to 'Home', root_path, class: 'navbar-brand'
     .collapse.navbar-collapse
       %ul.nav.navbar-nav.navbar-right
         -if current_user
