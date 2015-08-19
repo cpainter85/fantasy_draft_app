@@ -1,0 +1,9 @@
+.container
+  .page-header
+    %h1 Your Profile Information
+  #profile-info
+    %dl.dl-horizontal
+      %dt Name:
+      %dd=current_user.name
+      %dt Email:
+      %dd=current_user.email

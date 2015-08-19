@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   post 'sign-in', to: 'authentication#create'
   get 'sign-out', to: 'authentication#destroy'
 
+  resources :users, only: [:show]
+
   resources :games, only: [:new, :create, :show] do
     resources :teams, only: [:new, :create, :show] do
       resources :picks, only: [:new, :create]

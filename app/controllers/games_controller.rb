@@ -21,7 +21,7 @@ class GamesController < ApplicationController
   end
 
   def show
-    @game = Game.find(params[:id])
+    @game = Game.includes(:teams).find(params[:id])
   end
 
   private
