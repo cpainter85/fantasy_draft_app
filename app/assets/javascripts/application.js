@@ -11,19 +11,8 @@
 // about supported directives.
 //
 //= require jquery
+//= require jquery.turbolinks
 //= require jquery_ujs
 //= require bootstrap-sprockets
 //= require turbolinks
 //= require_tree .
-
-$(document).ready(function () {
-  $('.game-details').hide()
-
-  $('.game-info').hover(function () {
-    $(this).find('.game-details').slideDown();
-
-  }, function () {
-    $(this).find('.game-details').slideUp()
-  });
-
-})

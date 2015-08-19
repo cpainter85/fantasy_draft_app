@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gem 'rails_12factor', '~> 0.0.3', group: :production
 gem 'bootstrap-sass', '~> 3.3.5.1'
 gem 'haml', '~> 4.0.6'
-
+gem 'jquery-turbolinks', '~> 0.2.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.3'
